@@ -1,12 +1,16 @@
-const { Client } = require('pg');
-require('dotenv').config();
+const pgp = require("pg-promise")();
+require("dotenv").config();
 
-  const client = new Client({
-    host: process.env.PG_HOST,
-    port: process.env.PG_PORT,
-    user: process.env.PG_USER,
-    password: process.env.PG_PASSWORD,
-    database: process.env.PG_DATABASE,
-    ssl: true
-  })
-  return client
+const config = {
+  host: process.env.PG_HOST,
+  port: process.env.PG_PORT,
+  database: process.env.PG_DATABASE,
+  user: process.env.PG_USER,
+  password: process.env.PG_PASSWORD,
+};
+
+console.log('PostgresDB Connected Successfully');
+
+const db = pgp(config);
+
+module.exports = db;

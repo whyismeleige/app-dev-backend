@@ -1,10 +1,10 @@
 const puppeteer = require("puppeteer");
-const getPDF = require("./downloadPDFs");
+// const getPDF = require("./downloadPDFs");
 const SERVER_URL = "http://localhost:8080";
-const ticket_ranges = require("../../gradeSheets");
+const ticket_ranges = require("../../hallticketsRanges");
 const fs = require("fs-extra");
 const https = require("https");
-const extractText = require('./pdfExtract');
+// const extractText = require('./pdfExtract');
 
 const getCourseWork = async () => {
   console.log("Scraping the Website");
@@ -96,7 +96,7 @@ const saveData = async (data) => {
     phone_no: parseInt(data[3], 10),
   };
   console.log(userData);
-  await fetch(`${SERVER_URL}/`, {
+  await fetch(`${SERVER_URL}/student`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -184,6 +184,6 @@ const getExternalMarks = async () => {
   await browser.close();
 };
 
-getExternalMarks();
+getStudentsData();
 
 module.exports = getCourseWork;
