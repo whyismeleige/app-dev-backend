@@ -73,9 +73,7 @@ const getStudentsData = async () => {
       });
       await saveData(data);
     }
-    await page.goto("https://sjchyd.in/StudentLogin", {
-      waitUntil: "networkidle2",
-    });
+    
   }
   await browser.close();
 };
