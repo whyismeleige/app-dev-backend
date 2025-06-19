@@ -1,9 +1,11 @@
 const db = require("../models");
 const User = db.user;
-
+const VerifyEmail = db.verifyEmail;
+const sendOTP = require("../Utils/Email-Sender/test");
 let jwt = require("jsonwebtoken");
 let bcrypt = require("bcrypt");
 
+// signup routing
 exports.signup = (req, res) => {
   const user = new User({
     email: req.body.email,
@@ -24,21 +26,9 @@ exports.signup = (req, res) => {
         error,
       });
     });
-  // user.save((err,user) => {
-  //     if(err){
-  //         res.status(500).send({message:err});
-  //         return;
-  //     }
-  //     user.save(err => {
-  //         if(err){
-  //             res.status(500).send({message:err});
-  //             return;
-  //         }
-  //         res.send({message:"User was registered successfully"});
-  //     })
-  // })
 };
 
+// signin routing
 exports.signin = (req, res) => {
   User.findOne({
     email: req.body.email,
@@ -62,6 +52,7 @@ exports.signin = (req, res) => {
             { expiresIn: "24h" }
           );
           console.log(`User with email ${user.email} has logged in`);
+          sendOTP(user.email);
           res.status(200).send({
             message: "Login Successful",
             email: user.email,
@@ -80,6 +71,24 @@ exports.signin = (req, res) => {
       res.status(404).send({
         message: "Email not found",
         e,
+      });
+    });
+};
+
+// OTP Verification routing
+exports.otpVerification = (req, res) => {
+  VerifyEmail.findOne({
+    email: req.body.email
+  })
+    .then(() => {
+      res.status(200).send({
+        message: "OTP verified successfully",
+      });
+    })
+    .catch((error) => {
+      res.status(400).send({
+        message: "Invalid OTP",
+        error,
       });
     });
 };

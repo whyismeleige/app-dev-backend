@@ -1,6 +1,7 @@
 const url = 'mongodb://localhost:27017/college_database'
 const db = require('../models');
 
+// Database Connection
 const connectDB = () => {
    db.mongoose
       .connect(url)
