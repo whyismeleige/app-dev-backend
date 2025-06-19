@@ -5,8 +5,8 @@ checkDuplicateEmail = (req,res,next) => {
     User.findOne({
         email: req.body.email
     })
-    .then((user) => res.status(400).send({message:"Failed! Username is already in use."}))
-    .catch(err => res.status(500).send({message:err}))
+    // .then((user) => res.status(400).send({message:"Failed! Username is already in use."}))
+    // .catch(err => res.status(500).send({message:err}))
     next();
     // .exec((err,user) => {
     //     if(err){
