@@ -24,7 +24,6 @@ module.exports = (app) => {
   // OTP Verification MiddleWare and Endpoint
   app.post(
     "/api/auth/verify-otp",
-    [verifyOTP.checkExpiredOtp],
     controller.otpVerification
   );
 };

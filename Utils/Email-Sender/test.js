@@ -87,6 +87,4 @@ const getOTP = () => {
   return Math.round(diff * floatRandom) + min;
 };
 
-sendOTP("piyushjain31456@gmail.com");
-
-module.exports = { sendOTP };
+module.exports = sendOTP;

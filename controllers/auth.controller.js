@@ -36,7 +36,7 @@ exports.signin = (req, res) => {
     .then((user) => {
       bcrypt
         .compare(req.body.password, user.password)
-        .then((passwordCheck) => {
+        .then(async (passwordCheck) => {
           if (!passwordCheck) {
             return res.status(400).send({
               message: "Passwords do not match",
@@ -52,7 +52,7 @@ exports.signin = (req, res) => {
             { expiresIn: "24h" }
           );
           console.log(`User with email ${user.email} has logged in`);
-          sendOTP(user.email);
+          await sendOTP(user.email);
           res.status(200).send({
             message: "Login Successful",
             email: user.email,
@@ -60,6 +60,7 @@ exports.signin = (req, res) => {
           });
         })
         .catch((e) => {
+          console.log(e);
           res.status(400).send({
             message: "Passwords do not match",
             e,
@@ -78,16 +79,22 @@ exports.signin = (req, res) => {
 // OTP Verification routing
 exports.otpVerification = (req, res) => {
   VerifyEmail.findOne({
-    email: req.body.email
+    email: req.body.email,
+    otp: Number(req.body.otp),
   })
-    .then(() => {
+    .then((result) => {
+      if (!result) {
+        return res.status(400).send({
+          message: "Invalid OTP or email",
+        });
+      }
       res.status(200).send({
         message: "OTP verified successfully",
       });
     })
     .catch((error) => {
-      res.status(400).send({
-        message: "Invalid OTP",
+      res.status(500).send({
+        message: "Server Error while verifying OTP",
         error,
       });
     });
