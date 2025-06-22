@@ -1,4 +1,5 @@
-const url = 'mongodb://localhost:27017/college_database'
+require("dotenv").config()
+const url = process.env.MONGO_URI
 const db = require('../models');
 
 // Database Connection

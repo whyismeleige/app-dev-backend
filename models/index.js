@@ -8,5 +8,6 @@ db.mongoose = mongoose;
 
 db.user = require('./user.model');
 db.verifyEmail = require('./verifyEmail.model')
+db.pdf = require('./pdfs.model');
 
 module.exports = db;

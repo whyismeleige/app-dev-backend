@@ -6,11 +6,10 @@ require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT;
+dbConnect();
 
 app.use(cors());
 app.use(bodyParser.json())
-
-dbConnect();
 
 require('./routes/auth.routes')(app);
 
