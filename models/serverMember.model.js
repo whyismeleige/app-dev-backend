@@ -14,7 +14,6 @@ const serverMemberSchema = new mongoose.Schema(
     },
     nickname: {
       type: String,
-      maxlength: 32,
       default: null,
     },
     avatar: {

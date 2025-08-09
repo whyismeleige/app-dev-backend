@@ -1,5 +1,5 @@
 const db = require("../models");
-const User = db.user;
+const User = db.userLogin;
 const VerifyEmail = db.verifyEmail;
 const sendOTP = require("../Utils/Email-Sender/test");
 let jwt = require("jsonwebtoken");
@@ -50,6 +50,7 @@ exports.signin = async (req, res) => {
       message: "Logged In Successfully",
     });
   } catch (error) {
+    console.error(error);
     res.status(500).send({
       message: "Server Error: Login Failed",
       error,

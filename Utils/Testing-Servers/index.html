@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO Test</title>
+  </head>
+  <body>
+    <h1>Socket.IO Chat Test</h1>
+
+    <input id="channel" placeholder="Channel ID" />
+    <button onclick="joinChannel()">Join Channel</button>
+    <br /><br />
+
+    <input
+      id="message"
+      placeholder="Type a message"
+      onchange="typingMessage()"
+    />
+    <button onclick="sendMessage()">Send</button>
+
+    <ul id="messages"></ul>
+
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <script>
+      const socket = io("ws://localhost:8080");
+      const userId = "6894de2f684f19364783e749";
+      function joinChannel() {
+        const channelId = document.getElementById("channel").value;
+        socket.emit("joinChannel", { channelId, userId });
+        console.log("Joined channel", channelId);
+      }
+
+      function sendMessage() {
+        const channelId = document.getElementById("channel").value;
+        const content = document.getElementById("message").value;
+        socket.emit("sendMessage", { channelId, content, userId });
+      }
+
+      function typingMessage() {
+        const channelId = document.getElementById("channel").value;
+        socket.emit("typing", { channelId, userId });
+      }
+
+      socket.on("newMessage", (msg) => {
+        console.log("Received new message:", msg);
+        const li = document.createElement("li");
+        li.textContent = `[${msg.channelId}] ${msg.userId}: ${msg.content}`;
+        document.getElementById("messages").appendChild(li);
+      });
+    </script>
+  </body>
+</html>

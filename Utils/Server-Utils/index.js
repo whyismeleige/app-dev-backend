@@ -25,30 +25,30 @@ const getAvatar = () => {
   return `https://api.dicebear.com/8.x/${randomStyle}/svg?seed=${randomSeed}`;
 };
 
-const createUsers = async () => {
-  const Students = db.student;
-  const Server = db.server;
-  const User = db.user;
-  const studentsData = await Students.find({});
-  studentsData.forEach(async (student) => {
-    const course = `${student.dept} ${student.specialization}`;
-    try {
-      const serverID = await Server.findOne({
-        course,
-        year: student.year,
-      });
-      const newUser = {
-        username: student.name,
-        nickname: student.name,
-        email: student.email,
-        avatar: getAvatar(),
-        servers: [serverID],
-      };
-      await new User(newUser).save();
-    } catch (error) {
-      console.error("Error while Inserting New User", error);
+const getUsers = async () => {
+  const SERVER = db.server;
+  const Channel = db.channel;
+  const allServers = await SERVER.find({});
+  allServers.forEach(async (server) => {
+    const announcementChannel = {
+      name: 'announcements',
+      type: 5,
+      serverId: server._id,
     }
-  });
+    const textChannel = {
+      name: 'group-chat',
+      type: 0,
+      serverId: server._id,
+    }
+    const voiceChannel = {
+      name: 'voice-channel',
+      type: 2,
+      serverId: server._id
+    }
+    await new Channel(announcementChannel).save();
+    await new Channel(textChannel).save();
+    await new Channel(voiceChannel).save();
+  })
 };
 
-createUsers();
+getUsers();

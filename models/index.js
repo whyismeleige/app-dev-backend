@@ -15,5 +15,7 @@ db.student = require('./student.model');
 db.server = require('./server.model');
 db.user = require('./user.model');
 db.channel = require('./channel.model');
+db.serverMember = require('./serverMember.model');
+db.message = require('./message.model');
 
 module.exports = db;
