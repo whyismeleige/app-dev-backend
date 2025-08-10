@@ -11,11 +11,24 @@ const server = http.createServer(app);
 const PORT = process.env.PORT;
 dbConnect();
 
+const allowedOrigins = ["https://whyismeleige.github.io"];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
+
 const io = new Server(server, {
-  cors: { origin: "*", methods: ["GET","POST"] },
+  cors: {
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
 });
 
-app.use(cors());
 app.use(bodyParser.json());
 
 require("./routes/auth.routes")(app);
