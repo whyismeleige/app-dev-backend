@@ -140,15 +140,15 @@ exports.getUserData = async (req, res) => {
   const students = db.mongoose.connection.collection("student");
   try {
     const studentData = await students.findOne({ id: Number(hallTicketNo) });
-    if(!studentData){
+    if (!studentData) {
       return res.status(400).send({
-        message: "User Does not exist"
-      })
+        message: "User Does not exist",
+      });
     }
     res.status(201).send(studentData);
   } catch (error) {
     res.status(500).send({
-      message: 'Server Error'
-    })
+      message: "Server Error",
+    });
   }
 };

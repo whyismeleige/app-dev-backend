@@ -10,7 +10,7 @@ const PDF = mongoose.model(
         pdfUrl: String,
       },
     ],
-  })
+  }),'pdfs'
 );
 
 module.exports = PDF;

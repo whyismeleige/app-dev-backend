@@ -44,4 +44,8 @@ serverMemberSchema.virtual("displayName").get(function () {
   return this.nickname || this.user?.username || "Unknown User";
 });
 
-module.exports = mongoose.model("Server Member", serverMemberSchema);
+module.exports = mongoose.model(
+  "Server Member",
+  serverMemberSchema,
+  "serverMembers"
+);

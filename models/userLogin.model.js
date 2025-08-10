@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 // User Schema
 const UserLogin = mongoose.model(
-  "User Login",
+  "UserLogin",
   new mongoose.Schema({
     email: {
       type: String,
@@ -15,7 +15,7 @@ const UserLogin = mongoose.model(
       unique: false,
     },
   }),
-  "user login"
+  "userLogin"
 );
 
 module.exports = UserLogin;

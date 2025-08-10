@@ -80,6 +80,6 @@ channelSchema.virtual('messages',{
   foreignField: 'channelId'
 })
 
-const Channel = mongoose.model("Channel",channelSchema);
+const Channel = mongoose.model("Channel",channelSchema,'channels');
 
 module.exports = Channel;

@@ -8,7 +8,7 @@ const Subjects = mongoose.model(
     specialization: String,
     year: String,
     data: { type: Map, of: [String], required: true },
-  })
+  }),'subjects'
 );
 
 module.exports = Subjects;

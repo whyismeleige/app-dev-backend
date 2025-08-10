@@ -14,13 +14,13 @@ const UserSchema = new mongoose.Schema(
       trim: true,
       minlength: 2,
       maxlength: 100,
-      default: "College Student"
+      default: "College Student",
     },
-    email:{
+    email: {
       type: String,
       trim: true,
       lowercase: true,
-      required: true
+      required: true,
     },
     avatar: {
       type: String,
@@ -76,6 +76,6 @@ UserSchema.virtual("isOnline").get(function () {
   return this.status !== "offline" && this.status !== "invisible";
 });
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model("User", UserSchema, "users");
 
 module.exports = User;
