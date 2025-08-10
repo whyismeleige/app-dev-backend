@@ -11,7 +11,7 @@ const server = http.createServer(app);
 const PORT = process.env.PORT;
 dbConnect();
 
-const allowedOrigins = ["https://whyismeleige.github.io"];
+const allowedOrigins = ["https://whyismeleige.github.io","http://localhost:3000"];
 
 app.use(
   cors({
