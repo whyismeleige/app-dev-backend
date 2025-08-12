@@ -44,3 +44,21 @@ exports.getServers = async (req, res) => {
     });
   }
 };
+
+exports.getDetails = async (req, res) => {
+  const { userId } = req.body;
+  try {
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+      res.status(404).send({
+        message: "User Not Found",
+      });
+    }
+    res.status(200).send(user);
+  } catch (error) {
+    console.log("Error in Fetching User Data", error);
+    res.status(500).send({
+      message: "Server Error",
+    });
+  }
+};
