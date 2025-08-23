@@ -1,49 +1,33 @@
-const { MongoClient } = require("mongodb");
+const dbConnect = require("../../database/dbConnect");
+const db = require("../../models");
+const User = db.user;
+const Attendance = db.attendance;
+const NewAttendance = db.newAttendance;
 
-async function createSubjectDocs() {
-  const uri = "mongodb://localhost:27017"; // Replace with your MongoDB URI if needed
-  const dbName = "college_database"; // Replace with your DB name
-  const sourceCollectionName = "uniqueSubjectsCollection"; // Replace with your source collection name
-  const targetCollectionName = "unique_subjects"; // Name for new collection
-  const client = new MongoClient(uri);
+dbConnect();
 
-  try {
-    await client.connect();
-    console.log("✅ Connected to MongoDB");
-
-    const db = client.db(dbName);
-    const sourceCollection = db.collection(sourceCollectionName);
-    const targetCollection = db.collection(targetCollectionName);
-
-    // Step 1: Fetch the first document with the uniqueSubjects array
-    const sourceDoc = await sourceCollection.findOne({
-      uniqueSubjects: { $exists: true },
+const convertData = async () => {
+  const allAttendance = await Attendance.find({});
+  for (let userAttendance of allAttendance) {
+    const user = await User.findOne({
+      "academic.studentId": String(userAttendance.id),
     });
-
-    if (!sourceDoc || !Array.isArray(sourceDoc.uniqueSubjects)) {
-      console.error("❌ No valid document with uniqueSubjects array found.");
-      return;
-    }
-
-    // Step 2: Prepare and clean the subject documents
-    const subjectDocs = sourceDoc.uniqueSubjects.map((subject) => ({
-      subject: subject.trim().toUpperCase(),
-    }));
-
-    // Step 3: Clear target collection (optional)
-    await targetCollection.deleteMany({});
-
-    // Step 4: Insert all documents
-    await targetCollection.insertMany(subjectDocs);
-
-    console.log(
-      `✅ Inserted ${subjectDocs.length} subject documents into '${targetCollectionName}'`
-    );
-  } catch (err) {
-    console.error("❌ Error:", err.message);
-  } finally {
-    await client.close();
+    const newUserAttendance = new NewAttendance({
+      student: user._id,
+      studentId: String(userAttendance.id),
+      scrapedAttendance: userAttendance.data,
+      semDetails: {
+        semester: user.academic.semester,
+        startDate: new Date("2025-06-11"),
+        endDate: new Date("2025-10-15"),
+        lastDateOfAttendance: new Date("2025-09-20"),
+      },
+    });
+    await newUserAttendance
+      .save()
+      .then(() => console.log("Saved Successfully"))
+      .catch((error) => console.error("Error While Saving", error));
   }
-}
+};
 
-createSubjectDocs();
+convertData();
